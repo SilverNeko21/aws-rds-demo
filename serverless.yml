@@ -62,10 +62,36 @@ functions:
     handler: routes/getStudent.getStudents
     events: 
       - http:
-          path: Skipper_My-Son
+          path: Skipper_My_Son
           method: get
           cors: true
 
+  postStudent:
+    handler: routes/post.postStudent
+    events:
+      - http:
+          path: Skipper_my_Son_2
+          method: post
+          cors: true
+          integration: lambda  
+          
+  deleteStudent:
+    handler: routes/delete.deleteStudent
+    events:
+      - http:
+          path: Skipper_my_son_3
+          method: delete
+          cors: true
+          integration: lambda
+
+  updateStudent:
+    handler: routes/update.putStudent
+    events:
+      - http:
+          path: Skipper_my_son_4
+          method: update
+          cors: true
+          integration: lambda          
 #    The following are a few example events you can configure
 #    NOTE: Please make sure to change your handler code to work with those events
 #    Check the event documentation for details

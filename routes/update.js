@@ -13,14 +13,15 @@ const pool = new Pool({
 });
 
 
-module.exports.getStudents = (event, context, callback) => {
-
-  const getAllStudents = `SELECT * FROM ${table};`;
-
+module.exports.putStudent = (event, context, callback) => {
+  console.log('event.body', event.body);
+  const {id, name, grade} = event.body  
+  const putStudent = `UPDATE ${table} SET name  $1, grade $2 WHERE id = $3;`
+  console.log('name', name);
   pool.connect()
     .then(client => {
       client.release();
-      return client.query(getAllStudents);
+      return client.query(putStudent, [name, grade, id]);
     })
     .then(data => {
       const response = {
@@ -35,10 +36,16 @@ module.exports.getStudents = (event, context, callback) => {
       };
       callback(null, response);
     })
-    .catch(error => {
-      console.log('error', error);
-    })
+    .catch(e => {
+      console.log('error', e)
+      const response = {
+          "statusCode": 500,
+          "body": JSON.stringify(e)
+      }
+      callback(null, response);
+  });
+};
 
   // Use this code if you don't use the http event with the LAMBDA-PROXY integration
   // return { message: 'Go Serverless v1.0! Your function executed successfully!', event };
-};
+
